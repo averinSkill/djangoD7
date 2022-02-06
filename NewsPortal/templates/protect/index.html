@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+
+{% block content %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<div> Вы подписаны на:
+{% if sub_category %}
+
+    {% for category in sub_category %}
+        <h3>{{ category.name }}</h3>
+    {% endfor %}
+
+{% endif %}
+</div>
+
+{% if is_not_authors %}
+<button> <a href="sign/upgrade/"> Стать автором!</a> </button>
+{% endif %}
+
+<button> <a href="sign/logout/">Выйти</a> </button>
+{% endblock %}

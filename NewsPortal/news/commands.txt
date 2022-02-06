@@ -1,0 +1,113 @@
+from news.models import *
+
+
+au1 = Author.objects.create(user=User.objects.create_user(username='Илья'))
+au2 = Author.objects.create(user=User.objects.create_user(username='Лёха'))
+au3 = Author.objects.create(user=User.objects.create_user(username='Миха'))
+Category.objects.create(name='Погода')
+Category.objects.create(name='В мире')
+Category.objects.create(name='Здоровье')
+Category.objects.create(name='Спорт')
+
+headNWS = 'Мастер спорта СССР рассказал, как забайкальские политики за 7 лет развалили краевой спорт'
+
+bodyNWS = 'Показатели забайкальских спортсменов, в частности, биатлонистов, упали из-за неэффективного управления правительства региона.' \
+          'Худшим из министров спорта края был Роман Ларионов, который уволил четырёх директоров школ олимпийского резерва и 10 тренеров, ' \
+          'после чего в течение 7 лет в регионе не подготовили ни одного кандидата в мастера спорта, рассказал заслуженный мастер спорта СССР по биатлону, ' \
+          'чемпион мира, участник Олимпийских игр, почётный гражданин Читинской области, ' \
+          'председатель Федерации биатлона Забайкальского края Геннадий Ковалёв 10 декабря в интервью изданию «Вечорка».\n' \
+          '«Школа по биатлону была создана при Равиле Гениатулине, стрельбище, лыжероллерная трасса, ' \
+          'при нём впервые в истории России был проведён чемпионат Азии у нас в Чите. С 2007 по 2014 год в юношескую или юниорскую сборную России ' \
+          'постоянно были 2-3 человека из Забайкалья, кадры были великолепные. Уровень забайкальского биатлона был высочайший», — рассказал чемпион.\n' \
+          'Он уточнил, что забайкальские школы олимпийского резерва (ШОЗ) трижды представляли сборную России на чемпионатах Азии и ' \
+          'ни разу не возвращались без золотых медалей — суммарно завоевали 12 золотых, восемь серебряных и девять бронзовых наград./n' \
+          '«Как только ушёл Гениатулин, сразу началось… Самый большой вред забайкальскому спорту нанёс горе-министр Ларионов, которого поставил Ильковский. ' \
+          'Абсолютно безграмотный, непрофессионал, но со своими амбициями. Как только прошёл, начались сразу увольнения — сняли четырёх директоров, ' \
+          'я был в их числе, а также 10 тренеров, восемь из которых были мастера спорта, шесть из них имели высшую тренерскую категорию. Набрали, видимо, ' \
+          'нужных или угодных людей. Прошло 7 лет, за которые в нашей школе не подготовлено ни одного КМС», — пояснил Геннадий Ковалёв.\n'
+
+headART = 'Здоровье'
+bodyART = 'Здоро́вье у человека — состояние полного физического, душевного и социального благополучия, а не только отсутствие болезней и физических дефектов.\n' \
+          'К наукам, изучающим здоровье, относятся: гигиена, диетология, фармакология, биология, эпидемиология, ' \
+          'психология (психология здоровья, психология развития, экспериментальная и клиническая психология, социальная психология), ' \
+          'психофизиология, психиатрия, педиатрия, медицинская социология и медицинская антропология, психогигиена, дефектология и другие.\n' \
+          'Охрана здоровья человека (здравоохранение) — одна из функций государства.' \
+          'В мировом масштабе охраной здоровья человечества занимается Всемирная организация здравоохранения.\n' \
+          'На 2011 год в сфере психологии здоровья изучается преимущественно поведение, связанное со здоровьем — виды, факторы, способы изменения.\n' \
+          'Всемирный день здоровья «Здоровье для всех» отмечается ежегодно 7 апреля, Всемирный день психического здоровья — 10 октября. '
+
+Post.objects.create(author=au1, title=headNWS, text=bodyNWS)
+Post.objects.create(author=au3, type_post='ART', title='Здоро́вье у человека', text=bodyART)
+Post.objects.create(author=au2,
+                    type_post='ART',
+                    title=headART,
+                    text=bodyART,
+                    )
+
+Post.objects.get(id=1).category.add(Category.objects.get(id=4))
+Post.objects.get(id=1).category.add(Category.objects.get(id=3))
+Post.objects.get(id=1).category.add(Category.objects.get(id=2))
+
+Post.objects.get(id=2).category.add(Category.objects.get(id=3))
+Post.objects.get(id=2).category.add(Category.objects.get(id=1))
+
+Post.objects.get(id=3).category.add(Category.objects.get(id=1))
+Post.objects.get(id=3).category.add(Category.objects.get(id=2))
+
+Comment.objects.create(post=Post.objects.get(id=1),
+                        user=User.objects.get(id=1),
+                        text='комментарий 1')
+Comment.objects.create(post=Post.objects.get(id=1),
+                        user=User.objects.get(id=2),
+                        text='комментарий 2')
+Comment.objects.create(post=Post.objects.get(id=2),
+                        user=User.objects.get(id=1),
+                        text='комментарий 3')
+Comment.objects.create(post=Post.objects.get(id=3),
+                        user=User.objects.get(id=3),
+                        text='комментарий 4')
+# как из скринкаста
+Comment.objects.create(post=Post.objects.get(id=3),
+                        user=Author.objects.get(id=3).user,
+                        text='комментарий 5')
+
+
+7. Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+Post.objects.get(id=2).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=1).dislike()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=3).like()
+Comment.objects.get(id=4).dislike()
+Comment.objects.get(id=4).dislike()
+Comment.objects.get(id=1).like()
+
+
+8. Обновить рейтинги пользователей.
+id = Author.objects.values_list()
+Author.objects.get(id=1).update_rating()
+Author.objects.get(id=2).update_rating()
+Author.objects.get(id=3).update_rating()
+#for i in range(len(id)):
+#    Author.objects.get(id=i).update_rating()
+
+9. Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+a = Author.objects.order_by('-au_rating')[:1]
+f"Лучший пользователь - {a[0].au_user.username} и его рейтинг - {a[0].au_rating}"
+
+
+10. Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+p = Post.objects.order_by('-rating')[:1]
+p[0].dt_post
+a[0].au_user.username
+p[0].rating
+p[0].head
+Post.objects.get(head=p[0].head).preview()
+
+
+11. Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+c = Comment.objects.get(post=p[0].id)
+c.dt_cmt
+c.user.username
+c.rating
+c.text

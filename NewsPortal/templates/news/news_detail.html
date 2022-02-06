@@ -1,0 +1,38 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+    News
+{% endblock title %}
+
+{% block content %}
+
+<br>
+<br>
+<h1>{{ news_detail.title|censor }}</h1>
+<p>{{ news_detail.d_time|date:'d M Y h:m' }}</p>
+<br>
+<br>
+{{ news_detail.text|censor }}
+<br>
+<br>
+<br>
+
+<br>
+<table>
+    {% for category in post_category %}
+    <tr>
+        <td>
+            <h4><a href="{% url 'add_subscribe' category.id %}">{{ category.name }} </a></h4>
+
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<a href="{% url 'news_edit' news_detail.id %}"><u>Редактировать</u></a> <!-- добавим ссылку на редактирование товара-->
+<a href="{% url 'news_delete' news_detail.id %}"><u> Удалить </u></a> <!-- добавим ссылку на удаление товара-->
+
+
+{% endblock content %}
