@@ -6,13 +6,16 @@ import datetime as DT
 from datetime import timedelta, date, datetime
 
 # pip install backports.zoneinfo
-import zoneinfo
+from backports.zoneinfo import ZoneInfo
+
+from celery import shared_task
 
 
-MSC = zoneinfo.ZoneInfo("Europe/Moscow")
+MSC = ZoneInfo("Europe/Moscow")
 datetime(2022, 5, 2, tzinfo=MSC)
 
 
+@shared_task
 def weekly_digest():
     categories = Category.objects.all()
     today = DT.datetime.today()

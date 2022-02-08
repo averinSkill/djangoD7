@@ -133,13 +133,8 @@ class NewsDelete(PermissionRequiredMixin, DeleteView):
 def add_subscribe(request, pk):
 
     user = request.user
-
-    # category_object = PostCategory.objects.get(category=pk)
-    # category_object_name = category_object.category
-    # print('category_object_name = ', category_object_name)
     id_u = user.id
     category = Category.objects.get(id=pk)
-    # category.subscribers.add(user)
     print(f'''PK =  "{pk}", USER:  "{user}", user_id: "{id_u}", category: "{category}"''')
 
     qs = category.subscribers.all()

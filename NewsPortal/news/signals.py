@@ -17,12 +17,11 @@ def notify_managers_appointment(sender, instance, created, **kwargs):
     else:
         subject = f'Изменения в статье  {instance.title} {instance.d_time.strftime("%d %m %Y")}'
     recipient_list = []
-    # categ = instance.category.all().values()
-    # print('КАТЕГОРИЯ', f'{categ}')
+
     for category in instance.category.all():
         for user in category.subscribers.all():
-            print(user.email)
-            print(user)
+            # print(user.email)
+            # print(user)
             recipient_list.append(user.email)
 
     print(recipient_list)
